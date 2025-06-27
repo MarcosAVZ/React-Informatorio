@@ -4,6 +4,7 @@ import CardAlbumMusic from './components/AlbumCards/SquareAlbumCard/SquareAlbumC
 import RectangleAlbumCard from './components/AlbumCards/RectangleAlbumCard/RectangleAlbumCard'
 import LastListenedAlbums from './components/LastListenedAlbums/LastListenedAlbums'
 import NavBar from './components/NavBar/NavBar'
+import SideBar from './components/SideBar/SideBar'
 
 
 
@@ -11,6 +12,7 @@ function App() {
   return (
     <div className="App">
       <NavBar />
+      <SideBar />
       <div className="banner">
         <LastListenedAlbums>
           <RectangleAlbumCard   

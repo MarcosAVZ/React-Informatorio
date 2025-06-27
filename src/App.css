@@ -1,7 +1,18 @@
-.banner{
+
+.banner {
   max-width: 1280px;
+  min-height: 99vh;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: 80px;
   padding: 2rem;
   text-align: center;
+}
+
+.App {
+  background: linear-gradient(to bottom, #421483 15%, rgb(20,20,20) 33%);
+  margin-left: 110px;
+  border-radius: 10px;
+  margin-top: 75px;
+  max-height: 91vh; /* Ajusta según necesidad */
+  overflow-y: auto;
 }
