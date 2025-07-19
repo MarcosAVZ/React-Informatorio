@@ -1,0 +1,52 @@
+.detailContainer {
+  background: #181818;
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 480px;
+  margin: 40px auto;
+  margin-top: 100px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.detailImg {
+  width: 180px;
+  height: 180px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 24px;
+}
+
+.detailName {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.detailArtist {
+  color: #b3b3b3;
+  font-size: 1.2rem;
+  margin-bottom: 18px;
+}
+
+.detailCategorias {
+  margin-top: 16px;
+}
+
+.categoria {
+  background: #282828;
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 16px;
+  margin: 0 6px;
+  font-size: 0.95rem;
+  display: inline-block;
+}
+
+.notFound {
+  color: #fff;
+  text-align: center;
+  margin-top: 80px;
+  font-size: 1.5rem;
+}
