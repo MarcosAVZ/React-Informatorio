@@ -1,30 +1,52 @@
-import './App.css'
-import ListenAlbumToMusic from './components/ListenToMusic/ListenAlbumToMusic'
-import CardAlbumMusic from './components/AlbumCards/SquareAlbumCard/SquareAlbumCard'
-import RectangleAlbumCard from './components/AlbumCards/RectangleAlbumCard/RectangleAlbumCard'
-import LastListenedAlbums from './components/LastListenedAlbums/LastListenedAlbums'
-import NavBar from './components/NavBar/NavBar'
-import SideBar from './components/SideBar/SideBar'
+import  styles  from './home.module.css'
+import ListenAlbumToMusic from '../../components/ListenToMusic/ListenAlbumToMusic'
+import CardAlbumMusic from '../../components/AlbumCards/SquareAlbumCard/SquareAlbumCard'
+import RectangleAlbumCard from '../../components/AlbumCards/RectangleAlbumCard/RectangleAlbumCard'
+import LastListenedAlbums from '../../components/LastListenedAlbums/LastListenedAlbums'
+import NavBar from '../../components/NavBar/NavBar'
+import SideBar from '../../components/SideBar/SideBar'
+import { useNavigate } from 'react-router-dom';
+
+import { categorias } from '../../models/categoria'
+
+
+function Home() {
 
 
 
-function App() {
+
+  const navigate = useNavigate();
   return (
-    <div className="App">
+    <div className={styles.home}>
       <NavBar />
       <SideBar />
-      <div className="banner">
+      <div className={styles.banner}>
+        <div className={styles.categorySection}>
+          <h2 className={styles.categoryTitle}>Categorías</h2>
+          <div className={styles.categoryList}>
+            {categorias.map(cat => (
+              <span
+                key={cat.id}
+                className={styles.categoryItem}
+                onClick={() => navigate(`/category/${cat.id}`)}
+              >
+                {cat.nombre}
+              </span>
+            ))}
+          </div>
+        </div>
         <LastListenedAlbums>
           <RectangleAlbumCard   
             image="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da849d25907759522a25b86a3033"
             title="Tus Me Gusta"
+            onClick={() => navigate('./likeSong')}
           />
           <RectangleAlbumCard   
             image="https://i.scdn.co/image/ab6761610000e5ebb3cf4936e79bdd3a28b09aee"
             title="Un Poco de Ruido"
           />
           <RectangleAlbumCard
-            image="https://www.fmfederal.com/wp-content/uploads/2021/06/Captura-de-pantalla-2021-06-16-a-las-11.22.00.png"
+            image="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84763ad41af32e7e0658b4a7dd"
             title="Las mejores Cumbias.argentinas"
           />
           <RectangleAlbumCard
@@ -80,7 +102,7 @@ function App() {
         />
       </ListenAlbumToMusic>
 
-      <ListenAlbumToMusic   title="Volver a escuchar">
+      <ListenAlbumToMusic title="Volver a escuchar">
           <CardAlbumMusic 
             image="https://i.scdn.co/image/ab6761610000e5ebb3cf4936e79bdd3a28b09aee"
             title="Un Poco de Ruido"
@@ -108,7 +130,7 @@ function App() {
             radio={true}
           />
           <CardAlbumMusic 
-            image="https://www.fmfederal.com/wp-content/uploads/2021/06/Captura-de-pantalla-2021-06-16-a-las-11.22.00.png"
+            image="https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84763ad41af32e7e0658b4a7dd"
             title="Las mejores Cumbias.argentinas"
             artists="instagram @chino.beats las mejores cumbias..."
           />
@@ -156,10 +178,9 @@ function App() {
             artists="Mario Luis"
           />
         </ListenAlbumToMusic>
-
       </div>
     </div>
   )
 }
 
-export default App
+export default Home
