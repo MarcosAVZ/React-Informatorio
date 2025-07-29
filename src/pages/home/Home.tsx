@@ -9,7 +9,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { categorias } from '../../models/categoria'
 
+
 function Home() {
+
+
+
 
   const navigate = useNavigate();
   return (
@@ -174,7 +178,6 @@ function Home() {
             artists="Mario Luis"
           />
         </ListenAlbumToMusic>
-
       </div>
     </div>
   )

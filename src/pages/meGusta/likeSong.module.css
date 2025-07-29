@@ -55,6 +55,8 @@
   margin-right: 18px;
 }
 
+
+
 .songInfo {
   display: flex;
   flex-direction: column;
@@ -64,15 +66,44 @@
   color: #fff;
   font-size: 1.1rem;
   font-weight: 600;
+  text-align: left;
 }
 
 .songArtist {
   color: #b3b3b3;
   font-size: 0.95rem;
+  text-align: left;
 }
 
 .empty {
   color: #b3b3b3;
   font-size: 1.1rem;
   margin-top: 24px;
+}
+
+
+
+.playButton {
+  background: #1db954;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.songDetails {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.playButton:hover {
+  background: #1ed760;
 }

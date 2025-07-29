@@ -3,12 +3,24 @@ import { musicList } from "../../models/music";
 import styles from "./musicDetail.module.css";
 import NavBar from "../../components/NavBar/NavBar";
 import SideBar from "../../components/SideBar/SideBar";
+import { useContext } from "react";
+import { ReproductorContext } from "../../context/reproductorContext";
+
 
 function MusicDetail() {
   const { id } = useParams();
   const song = musicList.find(s => s.id === Number(id));
 
+
+  const reproductorContext = useContext(ReproductorContext);
+  if (!reproductorContext) {
+    throw new Error("ReproductorContext no está definido");
+  }
+
   if (!song) return <div className={styles.notFound}>Canción no encontrada</div>;
+
+  
+
 
   return (
     <div className={styles.musicDetail}>
@@ -22,7 +34,7 @@ function MusicDetail() {
             {song.categorias?.map(cat => (
             <span key={cat} className={styles.categoria}>{cat}</span>
         ))}
-        </div>
+      </div>
     </div>
     </div>
   );

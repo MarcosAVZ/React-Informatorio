@@ -1,84 +1,42 @@
 import styles from './NavBar.module.css';
-import { useState, useRef, useEffect } from 'react';
+import { useState, } from 'react';
 
 import { musicList } from '../../models/music'; 
 import { useNavigate } from 'react-router-dom';
+import Reproductor from '../Reproductor/Reproductor';
+
+//Uso de Context
+import { useContext } from "react";
+import { ReproductorContext } from "../../context/reproductorContext";
 
 const audios = musicList;
 
 
-function NavBar() {
-    const navigate = useNavigate();
 
+
+function NavBar() {
+    const reproductorContext = useContext(ReproductorContext);
+    if (!reproductorContext) {
+        throw new Error("ReproductorContext no está definido");
+    }
+    const { tiempoActual } = reproductorContext;
+
+    console.log(tiempoActual);
+    const navigate = useNavigate();
     const [busqueda, setBusqueda] = useState('');
     const audiosFiltrados = audios.filter(audio =>
         (audio.nombre + ' ' + audio.artista).toLowerCase().includes(busqueda.toLowerCase())
     );
 
-    const [currentAudio, setCurrentAudio] = useState<typeof audios[0] | null>(null);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [currentTime, setCurrentTime] = useState(0);
-    const [duration, setDuration] = useState(0);
-    const [volume, setVolume] = useState(1);
-
-    const audioRef = useRef<HTMLAudioElement>(null);
-
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.volume = volume;
+//ELEMENTOS DEL REPRODUCTOR
+    const [showReproductor, setShowReproductor] = useState(false);
+    const [audioActual, setAudioActual] = useState<typeof audios[0] | null>(null);
+    const handleButtonReproducir = () => {
+        if(showReproductor == false) {
+            setShowReproductor(!showReproductor);
         }
-    }, [volume]);
-
-    useEffect(() => {
-        if (currentAudio && audioRef.current) {
-            audioRef.current.play();
-            setIsPlaying(true);
-        }
-    }, [currentAudio]);
-
-    const handlePlayPause = () => {
-        if (!audioRef.current) return;
-        if (isPlaying) {
-            audioRef.current.pause();
-        } else {
-            audioRef.current.play();
-        }
-        setIsPlaying(!isPlaying);
-    };
-
-    const handleTimeUpdate = () => {
-        if (audioRef.current) {
-            setCurrentTime(audioRef.current.currentTime);
-        }
-    };
-
-    const handleLoadedMetadata = () => {
-        if (audioRef.current) {
-            setDuration(audioRef.current.duration);
-        }
-    };
-
-    const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (audioRef.current) {
-            audioRef.current.currentTime = Number(e.target.value);
-            setCurrentTime(Number(e.target.value));
-        }
-    };
-
-    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setVolume(Number(e.target.value));
-    };
-
-    const handleAudioEnded = () => {
-        setIsPlaying(false);
-        setCurrentTime(0);
-    };
-
-    const formatTime = (time: number) => {
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time % 60);
-        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-    };
+    }
+////////////////////////////
 
     return (
         <nav className={styles.navbar}>
@@ -134,8 +92,8 @@ function NavBar() {
                                 <button
                                     className={styles.playButton}
                                     onClick={() => {
-                                        setCurrentAudio(audio);
-                                        setCurrentTime(0);
+                                        handleButtonReproducir()
+                                        setAudioActual(audio);
                                     }}
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" width="24" height="24">
@@ -159,56 +117,8 @@ function NavBar() {
                     </svg>
                 </button>
             </div>
-            {currentAudio && (
-                <div className={styles.audioPlayerBar}>
-                    <img
-                        src={currentAudio.imagen}
-                        alt={currentAudio.nombre}
-                        className={styles.audioImgPlayer}
-                    />
-                    <div className={styles.audioPlayerInfo}>
-                        <div className={styles.audioName}>{currentAudio.nombre}</div>
-                        <div className={styles.audioArtist}>{currentAudio.artista}</div>
-                    </div>
-                    <button className={styles.playButton} onClick={handlePlayPause}>
-                        {isPlaying ? (
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" width="24" height="24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 5.25v13.5m10.5-13.5v13.5" />
-                            </svg>
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" width="24" height="24">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.25 19.5 12 5.25 18.75V5.25z" />
-                            </svg>
-                        )}
-                    </button>
-                    <span className={styles.time}>{formatTime(currentTime)}</span>
-                    <input
-                        type="range"
-                        min={0}
-                        max={duration}
-                        value={currentTime}
-                        onChange={handleSeek}
-                        className={styles.progressBar}
-                    />
-                    <span className={styles.time}>{formatTime(duration)}</span>
-                    <input
-                        type="range"
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        value={volume}
-                        onChange={handleVolumeChange}
-                        className={styles.volumeBar}
-                    />
-                    <audio
-                        ref={audioRef}
-                        src={currentAudio.src}
-                        onTimeUpdate={handleTimeUpdate}
-                        onLoadedMetadata={handleLoadedMetadata}
-                        onEnded={handleAudioEnded}
-                        style={{ display: 'none' }}
-                    />
-                </div>
+            {showReproductor  && (
+                <Reproductor audio={audioActual!} />
             )}
         </nav>
     );
