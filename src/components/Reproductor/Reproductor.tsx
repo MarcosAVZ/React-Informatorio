@@ -1,7 +1,7 @@
 
 import { useEffect, useRef } from "react";
 import { musicList } from '../../models/music'; 
-import styles from './Reproductor.module.css';
+import styles from './reproductor.module.css';
 import { useState } from "react";
 
 //Uso de Context
