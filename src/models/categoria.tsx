@@ -1,6 +1,7 @@
 export type Categoria = {
   id: number;
   nombre: string;
+  Seccion?: string;
 };
 
 export const categorias: Categoria[] = [

@@ -1,15 +1,27 @@
+// Estilos y assets
 import styles from './NavBar.module.css';
-import { useState, } from 'react';
 
-import { musicList } from '../../models/music'; 
+// Librerías y hooks
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Reproductor from '../Reproductor/Reproductor';
+import { useQuery } from '@tanstack/react-query';
 
-//Uso de Context
+// Uso de Context
 import { useContext } from "react";
 import { ReproductorContext } from "../../context/reproductorContext";
 
-const audios = musicList;
+// Servicios
+import { musicService } from '../../data/service.ts';
+
+
+const loadSongs = async () => {
+    try {
+        const data = await musicService.getAllSongs();
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 
 
@@ -19,24 +31,30 @@ function NavBar() {
     if (!reproductorContext) {
         throw new Error("ReproductorContext no está definido");
     }
-    const { tiempoActual } = reproductorContext;
 
-    console.log(tiempoActual);
     const navigate = useNavigate();
     const [busqueda, setBusqueda] = useState('');
-    const audiosFiltrados = audios.filter(audio =>
+    
+    const { data: audios } = useQuery({
+        queryKey: ['songs'],
+        queryFn: loadSongs,
+    });
+    
+    const audiosFiltrados = (audios && audios.filter(audio =>
         (audio.nombre + ' ' + audio.artista).toLowerCase().includes(busqueda.toLowerCase())
-    );
+    ));
 
-//ELEMENTOS DEL REPRODUCTOR
-    const [showReproductor, setShowReproductor] = useState(false);
-    const [audioActual, setAudioActual] = useState<typeof audios[0] | null>(null);
+  //ELEMENTOS DEL REPRODUCTOR
+
+    if (!reproductorContext) {
+        throw new Error("ReproductorContext no está definido");
+    }
+    const {  showReproductor ,setShowReproductor, setAudioActual } = reproductorContext;
     const handleButtonReproducir = () => {
         if(showReproductor == false) {
             setShowReproductor(!showReproductor);
         }
     }
-////////////////////////////
 
     return (
         <nav className={styles.navbar}>
@@ -73,7 +91,7 @@ function NavBar() {
                         className={styles.searchInput}
                     />
                 </div>
-                {busqueda && (
+                {busqueda && audiosFiltrados && (
                     <div className={styles.audioList}>
                         {audiosFiltrados.length === 0 && (
                             <div className={styles.audioItem}>No se encontraron audios.</div>
@@ -117,9 +135,6 @@ function NavBar() {
                     </svg>
                 </button>
             </div>
-            {showReproductor  && (
-                <Reproductor audio={audioActual!} />
-            )}
         </nav>
     );
 }

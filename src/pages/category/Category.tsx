@@ -1,16 +1,23 @@
-import { useParams } from "react-router-dom";
-import { musicList } from "../../models/music";
+// Librerías y hooks
+import { useParams, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
 
-import { categorias } from '../../models/categoria'
+// Componentes
 import NavBar from "../../components/NavBar/NavBar";
 import SideBar from "../../components/SideBar/SideBar";
 
+// Estilos y assets
 import styles from "./category.module.css";
 
-import { useNavigate } from "react-router-dom";
+// Modelos
+import { categorias } from '../../models/categoria';
 
-import { useContext } from "react";
+// Contextos
 import { ReproductorContext } from "../../context/reproductorContext";
+
+// Servicios
+import { musicService } from "../../data/service.ts";
 
 function Category() {
   const { id } = useParams();
@@ -18,9 +25,20 @@ function Category() {
 
   const navigate = useNavigate();
 
-  const cancionesFiltradas = musicList.filter(song =>
-    song.categorias?.includes(categoriaSeleccionada.nombre)
-  );
+////Traer datos de la BD
+  const loadSongs = async () => {
+          try {
+              const data = await musicService.getAllSongs();
+              return(data.filter(song => song.categorias && song.categorias.includes(categoriaSeleccionada.nombre)));
+          } catch (error) {
+              console.error(error);
+          }
+      }
+
+    const {data: songs, isLoading} = useQuery({queryKey: ['songs'], queryFn: loadSongs})
+
+////////////////////////////////////////////
+
 
 
   //ELEMENTOS DEL REPRODUCTOR
@@ -35,18 +53,23 @@ function Category() {
           }
       }
   ////////////////////////////
+  if (isLoading) {
+    return <div className={styles.loading}>Cargando canciones...</div>;
+  }
+
 
   return (
     <div className={styles.categoryPage}>
       <NavBar />
       <SideBar />
+      {songs && (
       <div className={styles.content}>
         <h1 className={styles.title}>{categoriaSeleccionada.nombre}</h1>
-        {cancionesFiltradas.length === 0 ? (
+        {songs.length === 0 ? (
           <p className={styles.empty}>No hay canciones en esta categoría.</p>
         ) : (
           <ul className={styles.songList}>
-            {cancionesFiltradas.map(song => (
+            {songs.map(song => (
               <li key={song.id} className={styles.songItem}>
                 <div className={styles.songDetails}>
                   <img src={song.imagen} alt={song.nombre} className={styles.songImg} />
@@ -75,6 +98,7 @@ function Category() {
           </ul>
         )}
       </div>
+      )}
     </div>
   );
 }

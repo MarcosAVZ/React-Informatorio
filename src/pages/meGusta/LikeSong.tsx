@@ -1,17 +1,24 @@
+// Componentes
 import NavBar from "../../components/NavBar/NavBar";
 import SideBar from "../../components/SideBar/SideBar";
+
+// Estilos y assets
 import styles from "./likeSong.module.css";
-import { musicList } from "../../models/music";
+
+// Librerías y hooks
 import { useNavigate } from "react-router-dom";
+import {useContext } from "react";
 
+// Servicios
+import { musicService } from "../../data/service.ts";
 
-//Uso de Context
-import { useContext } from "react";
+// Contextos
 import { ReproductorContext } from "../../context/reproductorContext";
+import { useQuery } from "@tanstack/react-query";
 
 function LikeSong() {
   const navigate = useNavigate();
-  const favoritas = musicList.filter((song) => song.meGusta);
+  
 
   //ELEMENTOS DEL REPRODUCTOR
   const reproductorContext = useContext(ReproductorContext);
@@ -26,15 +33,34 @@ function LikeSong() {
       }
   ////////////////////////////
 
+
+  //Traer datos de la BD
+
+          const loadSongs = async () => {
+              try {
+                  
+                  const data = await musicService.getAllSongs();
+                  return (data.filter(song => song.meGusta))
+              } catch (error) {   
+                  console.error("Error loading songs:", error);
+              }
+          }
+          
+    const {data: songs, isLoading} = useQuery({queryKey: ['songs'], queryFn: loadSongs})
+ //////////////////////////// 
+  
+  if (isLoading) {
+    return <div className={styles.loading}>Cargando canciones...</div>;
+  }
   return (
-    <div className={styles.likeSong}>
+    <div>
       <NavBar />
-      <h2 className={styles.title}>Tus canciones favoritas</h2>
-      {favoritas.length === 0 ? (
-        <div className={styles.empty}>No tienes canciones marcadas como favoritas.</div>
-      ) : (
+      <SideBar />
+      {songs && (
+      <div className={styles.likeSong}>
+        <h2 className={styles.title}>Tus canciones favoritas</h2>
         <ul className={styles.songList}>
-          {favoritas.map(song => (
+          {songs.map(song => (
             <li key={song.id} className={styles.songItem}>
               <div className={styles.songDetails}>
                 <img src={song.imagen} alt={song.nombre} className={styles.songImg} />
@@ -63,8 +89,8 @@ function LikeSong() {
             </li>
           ))}
         </ul>
+      </div>
       )}
-      <SideBar />
     </div>
   );
 }
