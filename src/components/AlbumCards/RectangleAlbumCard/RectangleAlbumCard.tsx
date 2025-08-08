@@ -1,4 +1,4 @@
-import styles from './rectangleAlbumCard.module.css';
+import styles from './RectangleAlbumCard.module.css';
 
 
 type CardAlbumMusicProps = {
