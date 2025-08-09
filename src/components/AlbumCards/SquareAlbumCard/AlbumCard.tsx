@@ -1,16 +1,9 @@
 import styles from './SquareAlbumCard.module.css'; // Assuming you have a CSS file for styles
+import type { Album } from '../../../models/album'; // Adjust the import path as necessary
 
-type CardAlbunMusicProps = {
-    image: string;
-    title?: string;
-    artists: string;
-    radio?: boolean;
-}
-
-
-function CardAlbumMusic({ image, title, artists, radio = false }: CardAlbunMusicProps) {
+function CardAlbumMusic({ image, title, artists, radio = false, onClick }: Album) {
     return (
-        <div className={styles.card}>
+        <div className={styles.card} onClick={onClick}>
             <img src={image} alt={title} className={`${styles.imagen} ${radio ? styles.radio : ''}`}/>
             <h3 className={styles.title}>{title}</h3>
             <p className={styles.artist}>{artists}</p>

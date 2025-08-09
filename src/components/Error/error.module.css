@@ -1,0 +1,28 @@
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: auto;
+    margin-left: 110px;
+    border-radius: 10px;
+    margin-top: 75px;
+    max-height: 91vh; 
+    background-color: #121212;
+}
+
+.errorIcon {
+    color: #ff0033;
+}
+
+.errorIcon svg {
+    width: 40px;
+    height: 40px;
+}
+
+.errorText {
+    color: #ffffff;
+    font-size: 16px;
+    margin-top: 20px;
+}

@@ -1,42 +1,72 @@
-.likeSong {
-  max-width: 90vw;
-  max-height: 80vh; /* Ajusta la altura máxima según sea necesario */
-  margin: 0 auto;
-  margin-top: 80px;
-  padding: 2rem;
-  text-align: center;
-  overflow-y: auto; /* Agrega la barra de desplazamiento vertical */
+.body{
+    background: linear-gradient(to bottom, #421483 15%, rgb(20,20,20) 33%);
+    height: 100vh;
+    margin-left: 110px;
+    border-radius: 10px;
+    margin-top: 75px;
+    max-height: 91vh;
+    overflow-y: auto;
 }
 
-.likeSong::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+.albumDetail {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
 }
 
-.likeSong::-webkit-scrollbar-thumb {
-  background-color: #282828;
+.albumInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.albumImage {
+  width: 20vw;
+  height: 20vw;
   border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin-right: 20px;
 }
 
-.likeSong::-webkit-scrollbar-track {
-  background-color: #181818;
+.content {
+  display: flex;
+  flex-direction: column;
+    align-content: center;
 }
 
-.songsContainer {
-  margin-left: 120px;
-  margin-top: 40px;
-  background: #181818;
-  border-radius: 12px;
-  padding: 32px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+.info {
+  display: flex;
+  flex-direction: column;
 }
 
-.title {
-  color: #fff;
-  font-size: 2rem;
-  margin-bottom: 24px;
+.info h1 {
+    font-size: 7vw;
+    margin: 0%;
+}
+
+.info h2 {
+  font-size: 36px;
   font-weight: bold;
+  margin-bottom: 10px;
 }
+
+.info p {
+  font-size: 16px;
+  color: #b3b3b3;
+}
+
+.musicList{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #b3b3b3;
+    border-top: 1px solid #b3b3b3;
+    margin-top: 10px;
+    margin-left: 5vw;
+    margin-right: 5vw;
+}
+
 
 .songList {
   list-style: none;

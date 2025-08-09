@@ -1,10 +1,15 @@
+// Librerías y hooks
 import { createContext, useState } from "react";
 import type { ReactNode } from "react";
-import { musicList } from '../models/music';
+import { useQuery } from "@tanstack/react-query";
 
-const audio = musicList[0];
+// Modelos
+import type { Music } from "../models/music.tsx";
 
-//La interfaz ReproductorProviderProps define el tipo de children como ReactNode, que es el tipo correcto para los elementos hijos de un componente.
+// Servicios
+import { musicService } from "../data/service.ts";
+
+
 interface ReproductorProviderProps {
     children: ReactNode;
 }
@@ -12,31 +17,48 @@ interface ReproductorProviderProps {
 interface ReproductorContextType {
     tiempoActual: number;
     setTiempoActual: (value: number) => void;
-    audioActual: typeof audio | null;
-    setAudioActual: (value: typeof audio) => void;
+    audioActual: Music | null;
+    setAudioActual: (value: Music | null) => void;
     showReproductor: boolean;
     setShowReproductor: (value: boolean) => void;
+    song: Music | undefined;
+    isLoading: boolean;
 }
 
+const loadSong = async (): Promise<Music | undefined> => {
+    try {
+        const data = await musicService.getAllSongs();
+        return data[0];
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 const ReproductorContext = createContext<ReproductorContextType | null>(null);
 
-const ReproductorProvider = ({ children } : ReproductorProviderProps) => {
-    const [tiempoActual, setTiempoActual] = useState(0);
-    const [audioActual, setAudioActual] = useState<typeof musicList[0] | null>(null);
-    const [showReproductor, setShowReproductor] = useState(false);
+const ReproductorProvider = ({ children }: ReproductorProviderProps) => {
+    const [tiempoActual, setTiempoActual] = useState<number>(0);
+    const [audioActual, setAudioActual] = useState<Music | null>(null);
+    const [showReproductor, setShowReproductor] = useState<boolean>(false);
+
+    const { data: song, isLoading } = useQuery<Music | undefined>({
+        queryKey: ['song'],
+        queryFn: loadSong,
+    });
 
     return (
-    <ReproductorContext.Provider value={{
-        tiempoActual,
-        setTiempoActual,
-        audioActual,
-        setAudioActual,
-        showReproductor,
-        setShowReproductor
-    }}>
+        <ReproductorContext.Provider value={{
+            tiempoActual,
+            setTiempoActual,
+            audioActual,
+            setAudioActual,
+            showReproductor,
+            setShowReproductor,
+            song,
+            isLoading,
+        }}>
         {children}
-    </ReproductorContext.Provider>
+        </ReproductorContext.Provider>
     );
 };
 

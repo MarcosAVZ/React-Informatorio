@@ -1,14 +1,11 @@
 import styles from './RectangleAlbumCard.module.css';
 
-
-type CardAlbumMusicProps = {
-    image: string;
-    title: string;
-    onClick?: () => void;
-}
+import type { Album } from '../../../models/album'; // Adjust the import path as necessary
 
 
-function RectangleAlbumCard({ image, title, onClick }: CardAlbumMusicProps) {
+
+
+function RectangleAlbumCard({ image, title, onClick }: Album) {
     return (
         <div className={styles.card} onClick={onClick}>
             <img src={image} alt={title} className={styles.image} />
