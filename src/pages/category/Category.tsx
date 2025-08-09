@@ -29,15 +29,16 @@ function Category() {
   const loadSongs = async () => {
           try {
               const data = await musicService.getAllSongs();
-              return(data.filter(song => song.categorias && song.categorias.includes(categoriaSeleccionada.nombre)));
+              return data;
           } catch (error) {
               console.error(error);
           }
       }
 
-    const {data: songs, isLoading} = useQuery({queryKey: ['songs'], queryFn: loadSongs})
+    const {data: allSongs, isLoading} = useQuery({queryKey: ['songs'], queryFn: loadSongs})
 
 ////////////////////////////////////////////
+const songs = allSongs?.filter(song => song.categorias && song.categorias.includes(categoriaSeleccionada.nombre))
 
 
 
@@ -65,6 +66,7 @@ function Category() {
       {songs && (
       <div className={styles.content}>
         <h1 className={styles.title}>{categoriaSeleccionada.nombre}</h1>
+        <div className={styles.songListContainer}>
         {songs.length === 0 ? (
           <p className={styles.empty}>No hay canciones en esta categoría.</p>
         ) : (
@@ -98,7 +100,9 @@ function Category() {
           </ul>
         )}
       </div>
+      </div>
       )}
+      
     </div>
   );
 }

@@ -73,7 +73,10 @@ export const musicDB: Music[] = [
 ]
 
 export const getNextMusicId = () => {
-    return Math.max(...musicDB.map((song) => song.id)) + 1;
+    const stored = localStorage.getItem('musicDB');
+    const localSongs = stored ? JSON.parse(stored) : [];
+    const allSongs = [...musicDB, ...localSongs];
+    return Math.max(...allSongs.map((song) => song.id)) + 1;
 };
 
 

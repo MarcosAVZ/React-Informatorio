@@ -1,4 +1,4 @@
-import styles from './rectangleAlbumCard.module.css';
+import styles from './RectangleAlbumCard.module.css';
 import type { Album } from '../../../models/album'; // Adjust the import path as necessary
 
 

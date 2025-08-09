@@ -3,14 +3,14 @@ import type { Music } from '../models/music.tsx';
 import type { Album } from '../models/album.tsx';
 
 // Simulate API delay
-const delay = (ms: number = 500): Promise<void> => 
+const delay = (ms: number = 300): Promise<void> => 
   new Promise((resolve) => setTimeout(resolve, ms));
 
 // Mock API service with CRUD operations
 export const musicService = {
   // GET all songs
     async getAllSongs(): Promise<Music[]> {
-        await delay(300);
+        await delay(700);
         // Load from localStorage if available, fallback to initial data
         const stored = localStorage.getItem('musicDB');
         if (stored) {
@@ -178,7 +178,7 @@ async getSongById(id: number): Promise<Music> {
 export const albumService = {
   // GET todos los álbumes
   async getAllAlbums(): Promise<Album[]> {
-    await delay(300);
+    await delay(700);
     const stored = localStorage.getItem('albumDB');
     if (stored) {
       return JSON.parse(stored) as Album[];

@@ -8,6 +8,8 @@ import RectangleAlbumCard from '../../components/AlbumCards/RectangleAlbumCard/R
 import LastListenedAlbums from '../../components/LastListenedAlbums/LastListenedAlbums';
 import NavBar from '../../components/NavBar/NavBar';
 import SideBar from '../../components/SideBar/SideBar';
+import Loading from '../../components/Loading/Loading';
+import ErrorComponents from '../../components/Error/ErrorComponent'
 
 // Librerías y hooks
 import { useNavigate } from 'react-router-dom';
@@ -16,8 +18,8 @@ import { useQuery } from '@tanstack/react-query';
 
 // Modelos y servicios
 import { categorias } from '../../models/categoria';
-// import type { Album } from "../../models/album";
 import { albumService } from '../../data/service';
+
 
 
 
@@ -39,15 +41,27 @@ function Home() {
               loadAlbums();
             }, []);
 
-            const {data: albums, isLoading}  = useQuery({ queryKey: ['albums'], queryFn: loadAlbums})
+            const {data: albums, isLoading, isError, error}  = useQuery({ queryKey: ['albums'], queryFn: loadAlbums})
    //////////////////////////// 
+
+
 
 
   const navigate = useNavigate();
 
-  if (isLoading) {
-    return <div className={styles.loading}>Cargando canciones...</div>;
-  }
+if (isLoading) {
+  return <Loading />
+}
+
+if(isError){
+    return (
+    <>
+      <ErrorComponents mensaje={error.message || 'Error desconocido'}/>
+      <SideBar />
+      <NavBar />
+    </>
+  );
+}
 
   return (
     <div className={styles.home}>

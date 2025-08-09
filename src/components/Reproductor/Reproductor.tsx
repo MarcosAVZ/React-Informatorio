@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, useContext } from "react";
 
 // Estilos y assets
-import styles from './Reproductor.module.css';
+import styles from './reproductor.module.css';
 
 // Modelos
 import type { Music } from "../../models/music.tsx";

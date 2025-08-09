@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./lastListenedAlbums.module.css";
+import styles from "./LastListenedAlbums.module.css";
 
 type LastListenedAlbumsProps = {
     children: React.ReactNode;
