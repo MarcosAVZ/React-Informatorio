@@ -12,6 +12,7 @@ import styles from "./category.module.css";
 
 // Modelos
 import { categorias } from '../../models/categoria';
+import type { Music } from "../../models/music.tsx";
 
 // Contextos
 import { ReproductorContext } from "../../context/reproductorContext";
@@ -38,7 +39,7 @@ function Category() {
     const {data: allSongs, isLoading} = useQuery({queryKey: ['songs'], queryFn: loadSongs})
 
 ////////////////////////////////////////////
-const songs = allSongs?.filter(song => song.categorias && song.categorias.includes(categoriaSeleccionada.nombre))
+const songs = allSongs?.filter((song: Music) => song.categorias && song.categorias.includes(categoriaSeleccionada.nombre))
 
 
 
@@ -71,7 +72,7 @@ const songs = allSongs?.filter(song => song.categorias && song.categorias.includ
           <p className={styles.empty}>No hay canciones en esta categoría.</p>
         ) : (
           <ul className={styles.songList}>
-            {songs.map(song => (
+            {songs.map((song: Music) => (
               <li key={song.id} className={styles.songItem}>
                 <div className={styles.songDetails}>
                   <img src={song.imagen} alt={song.nombre} className={styles.songImg} />

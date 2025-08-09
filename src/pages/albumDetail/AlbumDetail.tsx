@@ -16,6 +16,8 @@ import { ReproductorContext } from '../../context/reproductorContext';
 // Servicios
 import { albumService, musicService } from '../../data/service';
 
+// Tipos
+import type { Music } from '../../models/music';
 
 export function AlbumDetail() {
     const navigate = useNavigate();
@@ -42,7 +44,7 @@ export function AlbumDetail() {
     const loadSongs = async () => {
         try {
             const data = await musicService.getAllSongs();
-            return(data.filter(song => song.AlbumRelacion && song.AlbumRelacion.includes(Number(id))));
+            return(data.filter((song: Music) => song.AlbumRelacion && song.AlbumRelacion.includes(Number(id))));
         } catch (error) {
             console.error(error);
         }
@@ -87,7 +89,7 @@ export function AlbumDetail() {
                     </div>
                     </div>
                     <ul className={styles.songList}>
-                        {data?.songs?.map(song => (
+                        {data?.songs?.map((song: Music) => (
                             <li key={song.id} className={styles.songItem}>
                             <div className={styles.songDetails}>
                                 <img src={song.imagen} alt={song.nombre} className={styles.songImg} />

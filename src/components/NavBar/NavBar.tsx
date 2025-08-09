@@ -13,6 +13,10 @@ import { ReproductorContext } from "../../context/reproductorContext";
 // Servicios
 import { musicService } from '../../data/service.ts';
 
+//Tipos
+import type { Music } from '../../models/music.tsx';
+
+
 ////Traer datos de la BD
 const loadSongs = async () => {
     try {
@@ -40,7 +44,7 @@ function NavBar() {
         queryFn: loadSongs,
     });
     
-    const audiosFiltrados = (audios && audios.filter(audio =>
+    const audiosFiltrados = (audios && audios.filter((audio: Music ) =>
         (audio.nombre + ' ' + audio.artista).toLowerCase().includes(busqueda.toLowerCase())
     ));
 
@@ -96,7 +100,7 @@ function NavBar() {
                         {audiosFiltrados.length === 0 && (
                             <div className={styles.audioItem}>No se encontraron audios.</div>
                         )}
-                        {audiosFiltrados.map(audio => (
+                        {audiosFiltrados.map((audio: Music) => (
                             <div key={audio.id} className={styles.audioItem}>
                                 <img
                                     src={audio.imagen}

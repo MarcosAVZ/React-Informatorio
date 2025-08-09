@@ -19,6 +19,7 @@ import { useQuery } from '@tanstack/react-query';
 // Modelos y servicios
 import { categorias } from '../../models/categoria';
 import { albumService } from '../../data/service';
+import type { Album } from '../../models/album';
 
 
 
@@ -85,7 +86,7 @@ if(isError){
         
 
         <LastListenedAlbums>
-          {albums && albums.map(album => (
+          {albums && albums.map((album: Album) => (
             album.seccion === "Ultimo Escuchado" ? (
               <RectangleAlbumCard   
                 id={album.id}
@@ -105,7 +106,7 @@ if(isError){
         </LastListenedAlbums>
 
       <ListenAlbumToMusic  title="Usuario" topTitle="Creado para">
-          {albums && albums.map(album => (
+          {albums && albums.map((album: Album) => (
             album.seccion === "Creado para" ? (
               <CardAlbumMusic
                 id={album.id}  
@@ -118,7 +119,7 @@ if(isError){
       </ListenAlbumToMusic>
 
       <ListenAlbumToMusic title="Volver a escuchar">
-          {albums && albums.map(album => (
+          {albums && albums.map((album: Album) => (
             album.seccion === "Volver a escuchar" ? (
               <CardAlbumMusic
                 id={album.id}  
@@ -131,7 +132,7 @@ if(isError){
         </ListenAlbumToMusic>
 
         <ListenAlbumToMusic title="Álbumes con canciones que te gustan">
-          {albums && albums.map(album => (
+          {albums && albums.map((album: Album) => (
             album.seccion === "Álbumes con canciones que te gustan" ? (
               <CardAlbumMusic
                 id={album.id}  

@@ -16,6 +16,7 @@ import { ReproductorContext } from "../../context/reproductorContext";
 // Servicios
 import { musicService } from '../../data/service';
 
+
 function MusicDetail() {
   const { id } = useParams();
 
@@ -64,7 +65,7 @@ function MusicDetail() {
           <h2 className={styles.detailName}>{song.nombre}</h2>
           <h3 className={styles.detailArtist}>{song.artista}</h3>
           <div className={styles.detailCategorias}>
-            {song.categorias?.map((cat) => (
+            {song.categorias?.map((cat : string) => (
               <span key={cat} className={styles.categoria}>
                 {cat}
               </span>

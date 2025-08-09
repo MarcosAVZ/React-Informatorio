@@ -16,6 +16,9 @@ import { musicService } from "../../data/service.ts";
 import { ReproductorContext } from "../../context/reproductorContext";
 import { useQuery } from "@tanstack/react-query";
 
+//Tipo
+import type { Music } from "../../models/music.tsx";
+
 function LikeSong() {
   const navigate = useNavigate();
   
@@ -60,7 +63,7 @@ function LikeSong() {
       <div className={styles.likeSong}>
         <h2 className={styles.title}>Tus canciones favoritas</h2>
         <ul className={styles.songList}>
-          {songs.map(song => (
+          {songs.map((song: Music) => (
             <li key={song.id} className={styles.songItem}>
               <div className={styles.songDetails}>
                 <img src={song.imagen} alt={song.nombre} className={styles.songImg} />

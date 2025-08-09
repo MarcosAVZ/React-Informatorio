@@ -9,6 +9,7 @@ import { albumService } from '../../data/service';
 
 // Modelos
 import type { Music } from '../../models/music';
+import type { Album } from '../../models/album';
 
 // Componentes
 import Loading from '../../components/Loading/Loading';
@@ -36,7 +37,7 @@ const AddMusicForm = () => {
             queryClient.invalidateQueries({ queryKey: ['song'] });
             navigate('/'); // Navega al home después de agregar la música
         },
-            onError: (error) => {
+            onError: (error: Error) => {
                 console.error(error); // Maneja el error después de agregar la música
             },
         
@@ -127,7 +128,7 @@ const AddMusicForm = () => {
                                 }}
                             >
                                 <option value="">Seleccione un álbum</option>
-                                {albums && albums.map(album => (
+                                {albums && albums.map((album: Album )=> (
                                 <option key={album.id} value={album.id}>{album.title}</option>
                                 ))}
                             </select>
