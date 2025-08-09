@@ -1,6 +1,6 @@
 import NavBar from '../NavBar/NavBar';
 import SideBar from '../SideBar/SideBar';
-import styles from './Error.module.css';
+import styles from './error.module.css';
 
 interface ErrorProps {
   mensaje: string;
