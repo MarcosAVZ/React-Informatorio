@@ -15,6 +15,7 @@ import { musicService } from '../../data/service.ts';
 
 //Tipos
 import type { Music } from '../../models/music.tsx';
+import ErrorComponents from '../Error/ErrorComponent.tsx';
 
 
 ////Traer datos de la BD
@@ -39,7 +40,7 @@ function NavBar() {
     const navigate = useNavigate();
     const [busqueda, setBusqueda] = useState('');
     
-    const { data: audios } = useQuery({
+    const { data: audios,  isError, error } = useQuery({
         queryKey: ['songs'],
         queryFn: loadSongs,
     });
@@ -48,6 +49,10 @@ function NavBar() {
         (audio.nombre + ' ' + audio.artista).toLowerCase().includes(busqueda.toLowerCase())
     ));
 
+
+    if (isError) {
+        return <ErrorComponents mensaje={error.message || "Error desconocido"} />;
+    }
   //ELEMENTOS DEL REPRODUCTOR
 
     if (!reproductorContext) {

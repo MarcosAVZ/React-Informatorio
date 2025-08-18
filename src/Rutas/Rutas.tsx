@@ -5,7 +5,7 @@ import Reproductor from '../components/Reproductor/Reproductor';
 import { AlbumDetail } from '../pages/albumDetail/AlbumDetail';
 import Home from '../pages/home/Home';
 import MusicDetail from '../pages/musicDetail/MusicDetail';
-import Category from '../pages/category/Category';
+//import Category from '../pages/category/Category';
 import LikeSong from '../pages/meGusta/LikeSong';
 import AddMusicForm from '../pages/AgregarMusica/AgregarMusica';
 
@@ -15,6 +15,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Contextos
 import { ReproductorContext } from '../context/reproductorContext';
+import CreateAlbumForm from '../pages/CreateAlbumForm/CreateAlbumForm';
+import PageError from '../pages/PageError/PageError';
 
 export function Router() {
     
@@ -31,11 +33,11 @@ export function Router() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/music/:id" element={<MusicDetail />} />
-                <Route path="/category/:id" element={<Category />} />
                 <Route path="/album/:id" element={<AlbumDetail />} />
                 <Route path="/likeSong" element={<LikeSong />} />
                 <Route path='/AgregarMusic' element={<AddMusicForm/>}/>
-                <Route path="*" element={<div>Aqui no es</div>} />
+                <Route path='/AgregarAlbum' element={<CreateAlbumForm/>}/>
+                <Route path="*" element={<PageError/>} />
             </Routes>
             {showReproductor && audioActual && <Reproductor audio={audioActual} />}
         </BrowserRouter>

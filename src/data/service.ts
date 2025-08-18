@@ -2,6 +2,7 @@ import { musicDB, getNextMusicId, albumDB, getNextAlbumId } from './data.ts';
 import type { Music } from '../models/music.tsx';
 import type { Album } from '../models/album.tsx';
 
+
 // Simulate API delay
 const delay = (ms: number = 300): Promise<void> => 
   new Promise((resolve) => setTimeout(resolve, ms));
@@ -31,20 +32,7 @@ async getSongById(id: number): Promise<Music> {
     return song;
   },
 
-  // GET songs by categorias
-  async getSongsByGenre(categorias: string): Promise<Music[]> {
-    await delay(200);
-    const stored = localStorage.getItem('musicDB');
-    const songs = stored ? JSON.parse(stored) : musicDB;
-
-    if (!categorias) {
-      throw new Error('Genre parameter is required');
-    }
-
-    return songs.filter((song: Music) =>
-      song.categorias.some((g) => g.toLowerCase() === categorias.toLowerCase())
-    );
-  },
+  
 
   // GET songs by artista
   async getSongsByArtist(artista: string): Promise<Music[]> {
@@ -61,31 +49,6 @@ async getSongById(id: number): Promise<Music> {
     );
   },
 
-  // GET all categoriass with songs grouped by categorias
-  async getCategorias()  {
-    await delay(200);
-    const stored = localStorage.getItem('musicDB');
-    const songs = stored ? JSON.parse(stored) : musicDB;
-
-    const categoriasMap: { [key: string]: Music[] } = {};
-
-    songs.forEach((song: Music) => {
-      song.categorias.forEach((categorias) => {
-        if (!categoriasMap[categorias]) {
-          categoriasMap[categorias] = [];
-        }
-        categoriasMap[categorias].push(song);
-      });
-    });
-
-    // Convert to array format with categorias name and songs
-    return Object.keys(categoriasMap)
-      .map((categorias) => ({
-        categorias,
-        songs: categoriasMap[categorias],
-      }))
-      .sort((a, b) => a.categorias.localeCompare(b.categorias));
-  },
 
   // POST - Create new song
   async createSong(songData: Music): Promise<Music> {
@@ -108,7 +71,7 @@ async getSongById(id: number): Promise<Music> {
 
   // PUT - Update existing song
   async updateSong(id: string, songData: Music): Promise<Music> {
-    await delay(400);
+    await delay(100);
     const stored = localStorage.getItem('musicDB');
     const songs = stored ? JSON.parse(stored) : [...musicDB];
 
@@ -149,9 +112,8 @@ async getSongById(id: number): Promise<Music> {
     return songs.filter(
       (song: Music) =>
         song.nombre.toLowerCase().includes(query.toLowerCase()) ||
-        song.artista.toLowerCase().includes(query.toLowerCase()) ||
-        //song.album.toLowerCase().includes(query.toLowerCase()) ||
-        song.categorias.some((g) => g.toLowerCase().includes(query.toLowerCase()))
+        song.artista.toLowerCase().includes(query.toLowerCase()) 
+
     );
   },
 };
@@ -209,7 +171,7 @@ export const albumService = {
     }
 
     return albums.filter((album: Album) =>
-      album.artists.toLowerCase().includes(artista.toLowerCase())
+      album.creadoPor.toLowerCase().includes(artista.toLowerCase())
     );
   },
 
@@ -250,6 +212,22 @@ export const albumService = {
     return albums[index];
   },
 
+
+  async updateAlbums(albums: Album[]): Promise<Album[]> {
+  const stored = localStorage.getItem('albumDB');
+  const currentAlbums = stored ? JSON.parse(stored) : [...albumDB];
+
+  albums.forEach((album) => {
+    const index = currentAlbums.findIndex((a: Album) => a.id === album.id);
+    if (index !== -1) {
+      currentAlbums[index] = { ...currentAlbums[index], ...album };
+    }
+  });
+
+  localStorage.setItem('albumDB', JSON.stringify(currentAlbums));
+  return currentAlbums;
+  },
+
   // DELETE álbum
   async deleteAlbum(id: number): Promise<{ success: boolean }> {
     await delay(300);
@@ -277,7 +255,7 @@ export const albumService = {
     return albums.filter(
       (album: Album) =>
         album.title?.toLowerCase().includes(query.toLowerCase()) ||
-        album.artists.toLowerCase().includes(query.toLowerCase())
+        album.creadoPor.toLowerCase().includes(query.toLowerCase())
     );
   },
 };

@@ -1,8 +1,11 @@
+
+
 export type Album= {
     id: number;
     image: string;
-    title?: string;
-    artists: string;
+    title: string;
+    decription?: string;
+    creadoPor: string;
     radio?: boolean;
     seccion?: string;
     onClick?: () => void;

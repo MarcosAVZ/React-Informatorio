@@ -1,147 +1,96 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './SideBar.module.css';
-
-interface Playlist {
-  titulo: string;
-  descripcion?: string;
-  imagen?: string;
-}
+import { albumService } from '../../data/service';
+import { useNavigate } from 'react-router';
+import type { Album } from '../../models/album';
+import ErrorComponents from '../Error/ErrorComponent';
 
 const SideBar = () => {
-  const [showForm, setShowForm] = useState(false);
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [titlePlaylist, setTitlePlaylist] = useState('');
-  const [imagenPlayList, setImagen] = useState('');
-  const [descripcionPlayList, setDescripcion] = useState('');
+  const [albums, setAlbums] = useState<Album[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [errors, setError] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const img = new window.Image();
-    img.onload = () => {
-      setPlaylists([
-      ...playlists,
-      {
-        titulo: titlePlaylist,
-        imagen: imagenPlayList || "https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-size/large?v=v2&px=999",
-        descripcion: descripcionPlayList,
-      },
-      ]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadAlbums = async () => {
+      try {
+        const data = await albumService.getAllAlbums();
+        setAlbums(data);
+      } catch (error) {
+        console.error("Error al cargar los álbumes:", error);
+        setError(true)
+      } finally {
+        setLoading(false);
+    }
     };
-    img.onerror = () => {
-      setPlaylists([
-      ...playlists,
-      {
-        titulo: titlePlaylist,
-        imagen: "https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-size/large?v=v2&px=999",
-        descripcion: descripcionPlayList,
-      },
-      ]);
-    };
-    img.src = imagenPlayList || "https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-size/large?v=v2&px=999";
-    setTitlePlaylist('');
-    setImagen('');
-    setDescripcion('');
-    setShowForm(false);
-  };
+    loadAlbums();
+  }, []);
+
+
+  if (loading) {
+    return <div className={styles.loading}>
+            <div className={styles.loadingIcon}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+            </div>
+    </div>;
+  }
+  
+  if (errors) {
+    return <ErrorComponents mensaje="Error al cargar los álbumes" />;
+  }
 
   return (
     <div className={styles.sidebar}>
-      <button className={styles.addPlayListButton} onClick={() => setShowForm(true)}>
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path d="M4 12H20M12 4V20" ></path> </g></svg>
+      <button className={styles.addPlayListButton} onClick={() => navigate('/AgregarAlbum')}>
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+          <g id="SVGRepo_iconCarrier"> 
+            <path d="M4 12H20M12 4V20" ></path> 
+          </g>
+        </svg>
       </button>
-      {showForm && (
-        <div className={styles.formContainer}>
-          <form className={styles.formulario} onSubmit={handleSubmit}>
-              <h1 className={styles.fotmularioTitle}>Crea Tu PlayList</h1>
-            
-                <div className={styles.preview}>
-                  <img
-                    className={styles.playlistImagen}
-                    src={imagenPlayList || "https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-size/large?v=v2&px=999"}
-                    alt={titlePlaylist || "Imagen por defecto"}
-                    onError={(e) => {
-                      e.currentTarget.src = "https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-size/large?v=v2&px=999";
-                    }}
-                  />
-                  <div className={styles.playlistInfo}>
-                    {!titlePlaylist && <h1 className={styles.playlistTitle} >PlayList</h1>}
-                    {titlePlaylist && <h1 className={styles.playlistTitle} >{titlePlaylist}</h1>}
-                    {descripcionPlayList && <p className={styles.playlistDescripcion}>{descripcionPlayList}</p>}
-                  </div>
-                </div>
-          <div className={styles.formCamposContainer}>
-            <div className={styles.formCampo}>
-              <label htmlFor="playlistTitle">Título</label>
-              <input
-                className={styles.inputTitle}
-                type="text"
-                id="playlistTitle"
-                value={titlePlaylist}
-                maxLength={28}
-                onChange={(e) => setTitlePlaylist(e.target.value)}
-                placeholder='PlayList'
-              />
-            </div>
-            <div className={styles.formCampo}>
-              <label htmlFor="playlistImage">URL De La Imagen</label>
-              <input
-                className={styles.inputImagen}
-                type="text"
-                id="playlistImage"
-                value={imagenPlayList}
-                onChange={(e) => setImagen(e.target.value)}
-                placeholder="URL de la imagen"
-              />
-            </div>
-            <div className={styles.formCampo}>
-              <label htmlFor="playlistDescription">Descripción</label>
-              <textarea
-                className={styles.textArea}
-                rows={4}
-                id="playlistDescription"
-                value={descripcionPlayList}
-                onChange={(e) => setDescripcion(e.target.value)}
-                placeholder="Descripción"
-                maxLength={250}
-              />
-            </div>
-            <button className={styles.BtnAddPlaylist} type="submit">Crear playlist</button>
-            <button className={styles.BtnClose} type="button" onClick={() => setShowForm(false)}>Cancelar</button>
-          </div>
-            
-          </form>
-            
-        </div>
-      )}
+
       <ul className={styles.playlists}>
-        {playlists.map((playlist, index) => (
-            <li key={index} className={styles.playlistItem}>
-              <div className={styles.playlistImageWrapper} style={{ position: 'relative', display: 'inline-block' }}>
-                {playlist.imagen && (
+        {albums.slice().reverse().map((album, index) => (
+          <li key={index} className={styles.playlistItem}>
+            <div className={styles.playlistImageWrapper} style={{ position: 'relative', display: 'inline-block' }}>
+              {album.image && (
                 <img
                   className={styles.playlistImagenMini}
-                  src={playlist.imagen}
-                  alt="Playlist"
+                  src={album.image}
+                  alt={album.title}
                   title=""
-                  onMouseEnter={e => {
-                  const prev = e.currentTarget.parentElement?.querySelector(`.${styles.recuadroInfo}`);
-                  if (prev) prev.remove();
-                  const recuadroInfo = document.createElement('div');
-                  recuadroInfo.className = styles.recuadroInfo;
-                    recuadroInfo.innerHTML = `
-                      <h2 class="${styles.recuadroStyleTitle}">${playlist.titulo.slice(0,15)}${playlist.titulo.length > 15 ? '...' : ''}</h2>
-                      ${playlist.descripcion ? `<div class="${styles.recuadroStyleDescripcion}">${playlist.descripcion.slice(0, 40)}${playlist.descripcion.length > 40 ? '...' : ''}</div>` : ''}
-                    `;
-                  e.currentTarget.parentElement?.appendChild(recuadroInfo);
+
+                  onClick={() => {
+                    if (album.title === "Tus Me Gusta") {
+                      navigate(`/likeSong`);
+                    } else {
+                      navigate(`/album/${album.id}`);
+                    }
                   }}
-                  onMouseLeave={e => {
-                  const recuadroInfo = e.currentTarget.parentElement?.querySelector(`.${styles.recuadroInfo}`);
-                  if (recuadroInfo) recuadroInfo.remove();
+                  onMouseEnter={e => {
+                    const prev = document.querySelector(`.${styles.recuadroInfo}`);
+                    if (prev) prev.remove();
+                    const recuadroInfo = document.createElement('div');
+                    recuadroInfo.className = styles.recuadroInfo;
+                    recuadroInfo.innerHTML = `
+                        <h2 class="${styles.recuadroStyleTitle}">${album.title ? album.title.slice(0,14) + (album.title.length > 14 ? '...' : '') : album.creadoPor.slice(0,14) + (album.creadoPor.length > 14 ? '...' : '')}</h2>
+                    `;
+                    document.body.appendChild(recuadroInfo);
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    recuadroInfo.style.top = `${rect.top + rect.height / 2 - recuadroInfo.offsetHeight / 2}px`;
+                    recuadroInfo.style.left = `${rect.right + 10}px`;
+                  }}
+                  onMouseLeave={ () => {
+                    const recuadroInfo = document.querySelector(`.${styles.recuadroInfo}`);
+                    if (recuadroInfo) recuadroInfo.remove();
                   }}
                 />
-                )}
-              </div>
-            </li>
+              )}
+            </div>
+          </li>
         ))}
       </ul>
     </div>

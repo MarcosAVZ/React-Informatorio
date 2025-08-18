@@ -4,8 +4,7 @@ export type Music = {
     artista: string;
     src: string;
     imagen: string;
+    Album: string[];
     meGusta?: boolean;
-    categorias: string[]; // Nueva propiedad para categorías
-    AlbumRelacion?: number[]; // Relación con otros álbumes
 };
 

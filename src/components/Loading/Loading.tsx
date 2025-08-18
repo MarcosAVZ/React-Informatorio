@@ -3,6 +3,7 @@ import SideBar from '../SideBar/SideBar';
 import styles from './loading.module.css';
 
 const Loading = () => {
+    console.log("Cargando...");
     return (
         <>      
         <SideBar />

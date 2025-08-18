@@ -29,6 +29,14 @@
   font-weight: bold;
 }
 
+.labelError{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+
 .form input[type="text"],
 .form input[type="number"] {
   width: 100%;
@@ -68,9 +76,9 @@
 }
 
 .error {
+  align-items: center;
   color: #ff3737;
   font-size: 14px;
-  margin-top: 10px;
 }
 
 .select {
