@@ -64,13 +64,7 @@ function MusicDetail() {
           <img src={song.imagen} alt={song.nombre} className={styles.detailImg} />
           <h2 className={styles.detailName}>{song.nombre}</h2>
           <h3 className={styles.detailArtist}>{song.artista}</h3>
-          <div className={styles.detailCategorias}>
-            {song.categorias?.map((cat : string) => (
-              <span key={cat} className={styles.categoria}>
-                {cat}
-              </span>
-            ))}
-          </div>
+          
           <button
             className={styles.playButton}
             onClick={() => {
