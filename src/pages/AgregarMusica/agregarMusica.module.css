@@ -1,0 +1,143 @@
+.container {
+    display: flex;
+    margin-left: 110px;
+    border-radius: 10px;
+    margin-bottom: 75px;
+    margin-top: 77px;
+    height: 100vh;
+    width: auto;
+    background-color: #282828;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+.formContainer{
+    margin-left: 15px;
+    width: 48%;
+}
+
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.labelError{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+
+.form input[type="text"],
+.form input[type="number"] {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #3e3e3e;
+  color: #fff;
+}
+
+.form input[type="text"]:focus,
+.form input[type="number"]:focus {
+  outline: none;
+  background-color: #4e4e4e;
+}
+
+.button {   
+  width: 50%;
+  height: 40px;
+  margin-top: 20px;
+  background-color: #1db954;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #1aa34a;
+}
+
+.button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.error {
+  align-items: center;
+  color: #ff3737;
+  font-size: 14px;
+}
+
+.select {
+    width: 50%;
+    height: 40px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #3e3e3e;
+    color: #fff;
+}
+
+.select:focus {
+    outline: none;
+    background-color: #4e4e4e;
+}
+
+
+.previewContainer {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #3e3e3e;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.musicImagen {
+    max-width: 400px;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    min-width: 300px;
+    min-height: 300px;
+}
+
+.musicInfo {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.musicTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.musicArtista {
+    height: 10px;
+    font-size: 18px;
+    color: #fff;
+}

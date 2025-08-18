@@ -1,16 +1,33 @@
+// Estilos y assets
 import styles from './NavBar.module.css';
-import { useState, } from 'react';
 
-import { musicList } from '../../models/music'; 
+// Librerías y hooks
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Reproductor from '../Reproductor/Reproductor';
+import { useQuery } from '@tanstack/react-query';
 
-//Uso de Context
+// Uso de Context
 import { useContext } from "react";
 import { ReproductorContext } from "../../context/reproductorContext";
 
-const audios = musicList;
+// Servicios
+import { musicService } from '../../data/service.ts';
 
+//Tipos
+import type { Music } from '../../models/music.tsx';
+import ErrorComponents from '../Error/ErrorComponent.tsx';
+
+
+////Traer datos de la BD
+const loadSongs = async () => {
+    try {
+        const data = await musicService.getAllSongs();
+        return data;
+    } catch (error) {
+        console.error(error);
+    }
+};
+//////////////////////
 
 
 
@@ -19,24 +36,34 @@ function NavBar() {
     if (!reproductorContext) {
         throw new Error("ReproductorContext no está definido");
     }
-    const { tiempoActual } = reproductorContext;
 
-    console.log(tiempoActual);
     const navigate = useNavigate();
     const [busqueda, setBusqueda] = useState('');
-    const audiosFiltrados = audios.filter(audio =>
+    
+    const { data: audios,  isError, error } = useQuery({
+        queryKey: ['songs'],
+        queryFn: loadSongs,
+    });
+    
+    const audiosFiltrados = (audios && audios.filter((audio: Music ) =>
         (audio.nombre + ' ' + audio.artista).toLowerCase().includes(busqueda.toLowerCase())
-    );
+    ));
 
-//ELEMENTOS DEL REPRODUCTOR
-    const [showReproductor, setShowReproductor] = useState(false);
-    const [audioActual, setAudioActual] = useState<typeof audios[0] | null>(null);
+
+    if (isError) {
+        return <ErrorComponents mensaje={error.message || "Error desconocido"} />;
+    }
+  //ELEMENTOS DEL REPRODUCTOR
+
+    if (!reproductorContext) {
+        throw new Error("ReproductorContext no está definido");
+    }
+    const {  showReproductor ,setShowReproductor, setAudioActual } = reproductorContext;
     const handleButtonReproducir = () => {
         if(showReproductor == false) {
             setShowReproductor(!showReproductor);
         }
     }
-////////////////////////////
 
     return (
         <nav className={styles.navbar}>
@@ -73,12 +100,12 @@ function NavBar() {
                         className={styles.searchInput}
                     />
                 </div>
-                {busqueda && (
+                {busqueda && audiosFiltrados && (
                     <div className={styles.audioList}>
                         {audiosFiltrados.length === 0 && (
                             <div className={styles.audioItem}>No se encontraron audios.</div>
                         )}
-                        {audiosFiltrados.map(audio => (
+                        {audiosFiltrados.map((audio: Music) => (
                             <div key={audio.id} className={styles.audioItem}>
                                 <img
                                     src={audio.imagen}
@@ -106,6 +133,9 @@ function NavBar() {
                 )}
             </div>
             <div className={styles.rightSection}>
+                <button className={styles.AddIcon} onClick={() => navigate('/AgregarMusic')}>
+                    Agregar Cancion
+                </button>
                 <button className={`${styles.icon} ${styles.bellIcon}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" width="24" height="24">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
@@ -117,9 +147,6 @@ function NavBar() {
                     </svg>
                 </button>
             </div>
-            {showReproductor  && (
-                <Reproductor audio={audioActual!} />
-            )}
         </nav>
     );
 }

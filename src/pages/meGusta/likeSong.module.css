@@ -1,13 +1,26 @@
-.likeSong{
-    max-width: 90vw;
-    max-height: 90vh;
-    margin: 0 auto;
-    margin-top: 80px;
-    padding: 2rem;
-    text-align: center;
+.likeSong {
+  max-width: 90vw;
+  max-height: 80vh; /* Ajusta la altura máxima según sea necesario */
+  margin: 0 auto;
+  margin-top: 80px;
+  padding: 2rem;
+  text-align: center;
+  overflow-y: auto; /* Agrega la barra de desplazamiento vertical */
 }
 
+.likeSong::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
+.likeSong::-webkit-scrollbar-thumb {
+  background-color: #282828;
+  border-radius: 10px;
+}
+
+.likeSong::-webkit-scrollbar-track {
+  background-color: #181818;
+}
 
 .songsContainer {
   margin-left: 120px;
@@ -106,4 +119,18 @@
 
 .playButton:hover {
   background: #1ed760;
+}
+
+
+.likeSong::-webkit-scrollbar {
+    width: 5px;
+}
+
+.likeSong::-webkit-scrollbar-thumb {
+    background-color: rgb(40, 40, 40);
+    border-radius: 10px;
+}
+
+.likeSong::-webkit-scrollbar-track {
+    background-color: rgb(20, 20, 20);
 }

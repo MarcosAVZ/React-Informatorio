@@ -12,6 +12,20 @@
   color: white;
 }
 
+.AddIcon {
+  background: #1db954;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.AddIcon:hover {
+  background: #1ed760;
+}
 
 .leftSection {
   display: flex;

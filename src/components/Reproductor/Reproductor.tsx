@@ -1,18 +1,16 @@
+// Librerías y hooks
+import { useEffect, useRef, useState, useContext } from "react";
 
-import { useEffect, useRef } from "react";
-import { musicList } from '../../models/music'; 
+// Estilos y assets
 import styles from './reproductor.module.css';
-import { useState } from "react";
 
-//Uso de Context
-import { useContext } from "react";
+// Modelos
+import type { Music } from "../../models/music.tsx";
+
+// Contextos
 import { ReproductorContext } from "../../context/reproductorContext";
 
-
-
-type Audio = typeof musicList[0];
-
-export default function Reproductor({audio}: {audio: Audio}) {
+export default function Reproductor({audio}: {audio: Music}) {
 
         const reproductorContext = useContext(ReproductorContext);
         if (!reproductorContext) {
