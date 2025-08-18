@@ -3,6 +3,7 @@ import type { Album } from '../../../models/album'; // Adjust the import path as
 
 
 
+
 function RectangleAlbumCard({ image, title, onClick }: Album) {
     return (
         <div className={styles.card} onClick={onClick}>
